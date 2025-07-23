@@ -1,8 +1,17 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { SignUpUserDto } from './dto/sign-up.dto';
 import { SignInUserDto } from './dto/sign-in.dto';
 import { Public } from '../shared/decorator/public.docorator';
+import { AuthenticationGuard } from 'src/shared/guards/auth';
+
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -17,5 +26,11 @@ export class UserController {
   @Public()
   async signIn(@Body() signInDto: SignInUserDto) {
     return this.userService.signIn(signInDto);
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('who-am-i')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

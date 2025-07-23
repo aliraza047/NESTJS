@@ -16,11 +16,11 @@ export class UserHelper {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         expiresIn: '3d',
-        secret: 'your_jwt_secret',
+        secret: process.env.JWT_SECRET || 'JWT_SECRET',
       }),
       this.jwtService.signAsync(payload, {
         expiresIn: '7d',
-        secret: 'your_jwt_secret',
+        secret: process.env.JWT_SECRET || 'JWT_SECRET',
       }),
     ]);
 
