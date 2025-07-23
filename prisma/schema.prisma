@@ -21,4 +21,18 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  organizations Organization[]  
+
+}
+
+model Organization {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  country    String
+  currency   String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
