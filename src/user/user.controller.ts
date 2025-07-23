@@ -31,6 +31,6 @@ export class UserController {
   @UseGuards(AuthenticationGuard)
   @Get('who-am-i')
   getProfile(@Request() req) {
-    return req.user;
+    return this.userService.getUserInfo(req.user.userId);
   }
 }

@@ -84,4 +84,27 @@ export class UserService {
       throw error;
     }
   }
+
+  async getUserInfo(userId: string): Promise<ApiResponse<any>> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          createdAt: true,
+        },
+      });
+
+      if (!user) {
+        throw new BadRequestException('USER_NOT_FOUND');
+      }
+
+      return ResponseUtil.success('USER_INFO_RETRIEVED', user);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
