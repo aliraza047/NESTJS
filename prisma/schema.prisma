@@ -23,7 +23,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   organizations Organization[]  
-
 }
 
 model Organization {
@@ -35,4 +34,15 @@ model Organization {
   userId     String   @db.ObjectId
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  events     Event[]
+}
+
+model Event {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  org         Organization @relation(fields: [orgId], references: [id])
+  orgId       String       @db.ObjectId
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }

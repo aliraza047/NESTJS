@@ -47,7 +47,7 @@ export class UserService {
       },
     });
 
-    return user;
+    return ResponseUtil.success('SignUp Successfully!');
   }
 
   async signIn(signInDto: SignInUserDto): Promise<ApiResponse<Tokens>> {
