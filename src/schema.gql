@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type EventModel {
+  id: ID!
+  title: String!
+  description: String
+  orgId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  events(orgId: String): [EventModel!]!
+  event(id: String!): EventModel
+}
+
+type Mutation {
+  createEvent(createEventInput: CreateEventInput!): EventModel!
+  updateEvent(updateEventInput: UpdateEventInput!): EventModel!
+  removeEvent(id: String!): EventModel!
+}
+
+input CreateEventInput {
+  title: String!
+  description: String
+  orgId: String!
+}
+
+input UpdateEventInput {
+  title: String
+  description: String
+  orgId: String
+  id: String!
+}
