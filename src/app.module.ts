@@ -9,6 +9,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AtGuard } from './shared/guards/public';
+import { formatGraphQLError } from './shared/utility/graphQLErrorFormate';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AtGuard } from './shared/guards/public';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: formatGraphQLError,
       context: ({ req }) => ({ req }),
       playground: true,
     }),
