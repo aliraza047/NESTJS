@@ -3,12 +3,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { AtGuard } from './shared/guards/public';
 import { OrganizationModule } from './organization/organization.module';
 import { EventModule } from './event/event.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { AtGuard } from './shared/guards/public';
 
 @Module({
   imports: [

@@ -6,21 +6,16 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { AuthenticationGuard } from 'src/shared/guards/auth';
-import { Public } from 'src/shared/decorator/public.docorator';
 
 @Controller('event')
-@UseGuards(AuthenticationGuard)
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  @Public()
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
   }
