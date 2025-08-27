@@ -10,6 +10,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AtGuard } from './shared/guards/public';
 import { formatGraphQLError } from './shared/utility/graphQLErrorFormate';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { formatGraphQLError } from './shared/utility/graphQLErrorFormate';
     UserModule,
     OrganizationModule,
     EventModule,
+    ChatModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -25,6 +27,7 @@ import { formatGraphQLError } from './shared/utility/graphQLErrorFormate';
       context: ({ req }) => ({ req }),
       playground: true,
     }),
+    ChatModule,
   ],
   controllers: [],
   providers: [

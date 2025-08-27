@@ -22,7 +22,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  organizations Organization[]  
+  organizations Organization[] 
+  userChats      UserChat[]
+ 
 }
 
 model Organization {
@@ -45,4 +47,33 @@ model Event {
   orgId       String       @db.ObjectId
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+}
+
+model Chat {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  messages   Message[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  userChats  UserChat[]
+}
+
+model UserChat {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String  @db.ObjectId
+  chatId  String  @db.ObjectId
+
+  user    User    @relation(fields: [userId], references: [id])
+  chat    Chat    @relation(fields: [chatId], references: [id])
+
+  @@unique([userId, chatId])
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  chatId    String   @db.ObjectId
+  senderId  String   @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chat      Chat     @relation(fields: [chatId], references: [id])
 }
