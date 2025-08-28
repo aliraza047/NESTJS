@@ -15,7 +15,7 @@ export class UserHelper {
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
-        expiresIn: '3d',
+        expiresIn: '100d',
         secret: process.env.JWT_SECRET || 'JWT_SECRET',
       }),
       this.jwtService.signAsync(payload, {

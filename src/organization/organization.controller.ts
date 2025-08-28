@@ -11,11 +11,9 @@ import {
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { AuthenticationGuard } from 'src/shared/guards/auth';
 import { CurrentUser } from 'src/shared/decorator/get-current-user-id.decorator';
 
 @Controller('organization')
-@UseGuards(AuthenticationGuard)
 export class OrganizationController {
   constructor(private readonly orgService: OrganizationService) {}
 
