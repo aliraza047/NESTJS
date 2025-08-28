@@ -11,6 +11,7 @@ import { join } from 'path';
 import { AtGuard } from './shared/guards/public';
 import { formatGraphQLError } from './shared/utility/graphQLErrorFormate';
 import { ChatModule } from './chat/chat.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ChatModule } from './chat/chat.module';
     OrganizationModule,
     EventModule,
     ChatModule,
+    ProductModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -27,7 +29,6 @@ import { ChatModule } from './chat/chat.module';
       context: ({ req }) => ({ req }),
       playground: true,
     }),
-    ChatModule,
   ],
   controllers: [],
   providers: [

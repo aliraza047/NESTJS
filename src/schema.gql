@@ -16,15 +16,31 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  id: String!
+  name: String!
+  email: String!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  price: Float!
+  user: User!
+}
+
 type Query {
   events(orgId: String): [EventModel!]!
   event(id: String!): EventModel
+  getProduct(id: String!): Product
 }
 
 type Mutation {
   createEvent(createEventInput: CreateEventInput!): EventModel!
   updateEvent(updateEventInput: UpdateEventInput!): EventModel!
   removeEvent(id: String!): EventModel!
+  createProduct(createProductInput: CreateProductInput!): Product!
 }
 
 input CreateEventInput {
@@ -38,4 +54,11 @@ input UpdateEventInput {
   description: String
   orgId: String
   id: String!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  price: Float!
+  userId: String!
 }

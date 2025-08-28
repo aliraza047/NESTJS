@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/utility/exception';
+import { Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,8 +38,25 @@ async function bootstrap() {
   SwaggerModule.setup('api-documentation', app, documentFactory);
   //Swagger setup end
 
+  app.connectMicroservice({
+    transport: Transport.GRPC,
+    options: {
+      package: 'product',
+      protoPath: join(
+        '/home/zapta/Desktop/NestJS/my-project',
+        'proto/product.proto',
+      ),
+      url: 'localhost:50052',
+    },
+  });
+  app.useLogger(['log', 'error']);
+
+  await app.startAllMicroservices();
+
   await app.listen(process.env.PORT ?? 2000, () => {
     console.log(`Server is listening on port ${process.env.PORT ?? 2000}`);
   });
+
+  console.log('Microservice is running');
 }
 bootstrap();

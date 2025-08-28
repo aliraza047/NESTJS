@@ -24,7 +24,7 @@ model User {
 
   organizations Organization[] 
   userChats      UserChat[]
- 
+  products    Product[] 
 }
 
 model Organization {
@@ -76,4 +76,15 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   chat      Chat     @relation(fields: [chatId], references: [id])
+}
+
+
+model Product {
+  id          String   @id @map("_id") @default(auto()) @db.ObjectId
+  name        String
+  description String
+  price       Float
+
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
 }

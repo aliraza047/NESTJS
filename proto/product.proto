@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package product;
+
+service ProductService {
+  rpc CreateProduct(CreateProductRequest) returns (ProductResponse);
+  rpc GetProduct(GetProductRequest) returns (ProductResponse);
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  float price = 3;
+  string userId = 4;  // user reference
+}
+
+message GetProductRequest {
+  string id = 1;
+}
+
+message ProductResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  User user = 5;  // nested user object
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
