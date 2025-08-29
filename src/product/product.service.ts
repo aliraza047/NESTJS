@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { GrpcMethod } from '@nestjs/microservices';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  @GrpcMethod('ProductService', 'CreateProduct')
   async createProduct(data: {
     name: string;
     description: string;
@@ -20,10 +18,12 @@ export class ProductService {
         price: data.price,
         userId: data.userId,
       },
+      include: {
+        user: true,
+      },
     });
   }
 
-  @GrpcMethod('ProductService', 'GetProduct')
   async getProduct(data: { id: string }) {
     return await this.prisma.product.findUnique({
       where: { id: data.id },

@@ -2,20 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type EventModel {
-  id: ID!
-  title: String!
-  description: String
-  orgId: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type User {
   id: String!
   name: String!
@@ -31,29 +17,11 @@ type Product {
 }
 
 type Query {
-  events(orgId: String): [EventModel!]!
-  event(id: String!): EventModel
   getProduct(id: String!): Product
 }
 
 type Mutation {
-  createEvent(createEventInput: CreateEventInput!): EventModel!
-  updateEvent(updateEventInput: UpdateEventInput!): EventModel!
-  removeEvent(id: String!): EventModel!
   createProduct(createProductInput: CreateProductInput!): Product!
-}
-
-input CreateEventInput {
-  title: String!
-  description: String
-  orgId: String!
-}
-
-input UpdateEventInput {
-  title: String
-  description: String
-  orgId: String
-  id: String!
 }
 
 input CreateProductInput {

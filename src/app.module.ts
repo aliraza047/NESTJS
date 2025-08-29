@@ -17,10 +17,10 @@ import { ProductModule } from './product/product.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
-    UserModule,
-    OrganizationModule,
-    EventModule,
-    ChatModule,
+    // UserModule,
+    // OrganizationModule,
+    // EventModule,
+    // ChatModule,
     ProductModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -30,12 +30,12 @@ import { ProductModule } from './product/product.module';
       playground: true,
     }),
   ],
-  controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AtGuard,
-    },
-  ],
+  // controllers: [],
+  // providers: [
+  //   {
+  //     provide: APP_GUARD,
+  //     useClass: AtGuard,
+  //   },
+  // ],
 })
 export class AppModule {}
