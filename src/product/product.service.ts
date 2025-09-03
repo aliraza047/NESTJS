@@ -30,4 +30,12 @@ export class ProductService {
       include: { user: true },
     });
   }
+
+  // For server streaming: fetch multiple products by userId
+  async streamProductsByUser(userId: string) {
+    return this.prisma.product.findMany({
+      where: { userId },
+      include: { user: true },
+    });
+  }
 }

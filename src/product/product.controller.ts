@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
-import { GrpcMethod } from '@nestjs/microservices';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import { ProductService } from './product.service';
+import { from, Observable } from 'rxjs';
 
 @Controller()
 export class ProductController {
@@ -47,5 +48,16 @@ export class ProductController {
         email: product.user.email,
       },
     };
+  }
+
+  @GrpcMethod('ProductService', 'StreamProductsByUser')
+  async streamProductsByUser(data: {
+    userId: string;
+  }): Promise<Observable<any>> {
+    const productsArray = await this.productService.streamProductsByUser(
+      data.userId,
+    );
+    console.log('productsArray', productsArray);
+    return from(productsArray);
   }
 }

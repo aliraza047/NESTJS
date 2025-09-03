@@ -5,6 +5,7 @@ package product;
 service ProductService {
   rpc CreateProduct(CreateProductRequest) returns (ProductResponse);
   rpc GetProduct(GetProductRequest) returns (ProductResponse);
+  rpc StreamProductsByUser(UserProductsRequest) returns (stream ProductResponse);
 }
 
 message CreateProductRequest {
@@ -16,6 +17,10 @@ message CreateProductRequest {
 
 message GetProductRequest {
   string id = 1;
+}
+
+message UserProductsRequest {
+  string userId = 1;
 }
 
 message ProductResponse {

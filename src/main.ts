@@ -3,55 +3,60 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/utility/exception';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { grpcClientOptions } from './grpc-client.options';
+import { ReflectionService } from '@grpc/reflection';
+import * as grpc from '@grpc/grpc-js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.enableCors();
-  // app.useGlobalFilters(new HttpExceptionFilter());
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     transform: true,
-  //   }),
-  // );
+  app.enableCors();
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
 
   //Swagger setup
-  // const config = new DocumentBuilder()
-  //   .setTitle('NestJS with Prisma Documentation')
-  //   .setDescription('The NestJS with Prisma description')
-  //   .addBearerAuth(
-  //     {
-  //       description: `[just text field] Please enter token in following format: <JWT>`,
-  //       name: 'Authorization',
-  //       bearerFormat: 'Bearer',
-  //       scheme: 'Bearer',
-  //       type: 'http',
-  //       in: 'Header',
-  //     },
-  //     'access-token',
-  //   )
-  //   .setVersion('1.0')
-  //   .build();
-  // const documentFactory = () => SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api-documentation', app, documentFactory);
+  const config = new DocumentBuilder()
+    .setTitle('NestJS with Prisma Documentation')
+    .setDescription('The NestJS with Prisma description')
+    .addBearerAuth(
+      {
+        description: `[just text field] Please enter token in following format: <JWT>`,
+        name: 'Authorization',
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header',
+      },
+      'access-token',
+    )
+    .setVersion('1.0')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-documentation', app, documentFactory);
   //Swagger setup end
 
-  // app.connectMicroservice({
-  //   transport: Transport.GRPC,
-  //   options: {
-  //     package: 'product',
-  //     protoPath: join(
-  //       '/home/zapta/Desktop/NestJS/my-project',
-  //       'proto/product.proto',
-  //     ),
-  //     url: 'localhost:50052',
-  //   },
-  // });
+  const grpcOptionsWithReflection: MicroserviceOptions = {
+    transport: grpcClientOptions.transport,
+    options: {
+      ...grpcClientOptions.options,
+      onLoadPackageDefinition: (
+        packageDefinition: any,
+        server: grpc.Server,
+      ) => {
+        // Add reflection service to gRPC server
+        new ReflectionService(packageDefinition).addToServer(server);
+      },
+    },
+  };
 
-  app.connectMicroservice<MicroserviceOptions>(grpcClientOptions);
+  app.connectMicroservice<MicroserviceOptions>(grpcOptionsWithReflection);
+
+  // app.connectMicroservice<MicroserviceOptions>(grpcClientOptions);
   await app.startAllMicroservices();
 
   await app.listen(process.env.PORT ?? 2000, () => {
